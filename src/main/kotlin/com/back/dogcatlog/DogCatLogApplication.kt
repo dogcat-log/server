@@ -1,11 +1,13 @@
 package com.back.dogcatlog
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class DogcatlogApplication
+@ConfigurationPropertiesScan
+class DogCatLogApplication
 
 fun main(args: Array<String>) {
-	runApplication<DogcatlogApplication>(*args)
+	runApplication<DogCatLogApplication>(*args)
 }
