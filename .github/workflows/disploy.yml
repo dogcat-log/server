@@ -1,0 +1,47 @@
+name: Deploy to cloudtype
+on:
+  push:
+    branches:
+      - oauth2
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Connect deploy key
+        uses: cloudtype-github-actions/connect@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          ghtoken: ${{ secrets.GHP_TOKEN }}
+      - name: Deploy
+        uses: cloudtype-github-actions/deploy@v1
+        with:
+          token: ${{ secrets.CLOUDTYPE_TOKEN }}
+          project: dev.jinsung1017/myhomedogcuty
+          stage: main
+          yaml: |
+            name: server
+            app: java@21
+            options:
+              ports: 8080
+              env:
+                - name: DB_URL
+                  value: ${{ secrets.DB_URL }}
+                - name: DB_USERNAME
+                  value: ${{ secrets.DB_USERNAME }}
+                - name: DB_PASSWORD
+                  value: ${{ secrets.DB_PASSWORD }}
+                - name: JWT_SECRET_KEY
+                  value: ${{ secrets.JWT_SECRET_KEY }}
+                - name: JWT_ACCESS_TOKEN_EXPIRATION
+                  value: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRATION }}
+                - name: JWT_REFRESH_TOKEN_EXPIRATION
+                  value: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRATION }}
+              buildenv:
+                - JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+            context:
+              git:
+                url: git@github.com:${{ github.repository }}.git
+                ref: ${{ github.ref }}
+              preset: java-springboot
