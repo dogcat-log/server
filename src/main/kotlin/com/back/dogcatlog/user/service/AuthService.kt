@@ -84,6 +84,7 @@ class AuthService(
             userPassword = "",
             provider = provider
         )
+
         return userRepository.save(user)
     }
 }
