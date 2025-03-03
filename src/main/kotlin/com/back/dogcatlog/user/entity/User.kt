@@ -1,13 +1,16 @@
 package com.back.dogcatlog.user.entity
 
 import com.back.dogcatlog.user.dto.AuthProvider
+import com.back.dogcatlog.threms.TermsVersion
 import com.back.dogcatlog.user.dto.UserRole
 import jakarta.persistence.*
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.Instant
 
 @Entity
 @Table(name = "users")
-data class User(
+class User(
     @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +30,13 @@ data class User(
     @Column(nullable = false)
     val userRole: UserRole = UserRole.USER,
 
-    val createAt: Instant = Instant.now(),
+    @Column(length = 10)
+    var latestTermVersion: TermsVersion? = null,
 
-    var updatedAt: Instant = Instant.now(),
+    @CreationTimestamp
+    val createAt: Instant? = null,
+
+    @UpdateTimestamp
+    var updatedAt: Instant? = null,
 
     )
