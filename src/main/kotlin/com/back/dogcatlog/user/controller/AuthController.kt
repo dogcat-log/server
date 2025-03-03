@@ -1,5 +1,6 @@
 package com.back.dogcatlog.user.controller
 
+import com.back.dogcatlog.global.error.SuccessResponse
 import com.back.dogcatlog.user.dto.TokenResponse
 import com.back.dogcatlog.user.service.AuthService
 import org.springframework.http.ResponseEntity
@@ -18,9 +19,9 @@ class AuthController(
     fun oauthLogin(
         @RequestParam accessToken: String,
         @RequestParam provider: String
-    ): ResponseEntity<TokenResponse> {
+    ): ResponseEntity<SuccessResponse<TokenResponse>> {
         val tokens = authService.authenticateWithOAuth2(accessToken, provider)
-        return ResponseEntity.ok(tokens)
+        return ResponseEntity.ok(SuccessResponse.of(tokens))
     }
 
     @PostMapping("/refresh")
@@ -30,8 +31,4 @@ class AuthController(
         val tokens = authService.refreshToken(refreshToken)
         return ResponseEntity.ok(tokens)
     }
-
-
-
-
 }
