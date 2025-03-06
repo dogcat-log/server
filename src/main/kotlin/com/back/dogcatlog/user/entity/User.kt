@@ -23,7 +23,7 @@ class User(
     var userPassword: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     val provider: AuthProvider,
 
     @Enumerated(EnumType.STRING)
