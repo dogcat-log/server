@@ -24,6 +24,7 @@ class AuthService(
         val userInfo = when (provider.uppercase()) {
             "KAKAO" -> getKakaoUserInfo(accessToken)
             "GOOGLE" -> getGoogleUserInfo(accessToken)
+            "NAVER" -> getNaverUserInfo(accessToken)
             else -> throw CustomException(ErrorCode.INVALID_PROVIDER)
         }
 
@@ -76,6 +77,27 @@ class AuthService(
         val email = body["email"] as String
 
         return OAuthUserInfo(email)
+    }
+
+    private fun getNaverUserInfo(accessToken: String): OAuthUserInfo {
+        val headers= HttpHeaders()
+        headers.set("Authorization", "Bearer $accessToken")
+
+        val entity = HttpEntity<String>(headers)
+
+        val response = restTemplate.exchange(
+            "https://openapi.naver.com/v1/nid/me",
+            HttpMethod.GET,
+            entity,
+            Map::class.java
+        )
+
+        val body = response.body ?: throw CustomException(ErrorCode.OAUTH2_PROCESSING_ERROR)
+        val responseData = body["response"] as Map<*, *>
+        val email = responseData["email"] as String
+
+        return OAuthUserInfo(email)
+
     }
 
     private fun saveUser(email: String, provider: AuthProvider): User {
