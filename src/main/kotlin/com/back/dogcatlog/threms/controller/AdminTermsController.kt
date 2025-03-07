@@ -2,6 +2,7 @@ package com.back.dogcatlog.threms.controller
 
 import com.back.dogcatlog.config.CustomUserDetails
 import com.back.dogcatlog.global.error.SuccessResponse
+import com.back.dogcatlog.threms.dto.AddNewTermsVersion
 import com.back.dogcatlog.threms.dto.AdminAddNewTermsType
 import com.back.dogcatlog.threms.service.AdminTermsService
 import org.springframework.http.ResponseEntity
@@ -24,7 +25,7 @@ class AdminTermsController(
     fun addNewTermsType(
         @RequestBody requestBody: AdminAddNewTermsType,
     ): ResponseEntity<SuccessResponse<Boolean>> {
-        val newTerms = adminTermsService.addNewTermsVersion(requestBody)
+        val newTerms = adminTermsService.addNewTermsType(requestBody)
         return ResponseEntity.ok(SuccessResponse.of(true))
     }
 
@@ -33,7 +34,7 @@ class AdminTermsController(
      * */
     @PostMapping("/versions")
     fun addNewTermsVersion(
-        @RequestBody requestBody: AdminAddNewTermsType
+        @RequestBody requestBody: AddNewTermsVersion
     ): ResponseEntity<SuccessResponse<Boolean>> {
         adminTermsService.addNewTermsVersion(requestBody)
         return ResponseEntity.ok(SuccessResponse.of(true))

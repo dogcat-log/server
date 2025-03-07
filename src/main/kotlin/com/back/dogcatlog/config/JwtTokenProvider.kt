@@ -11,7 +11,7 @@ import java.util.Date
 
 @Component
 class JwtTokenProvider(private val jwtProperties: JwtProperties) {
-    private val key = Keys.secretKeyFor(SignatureAlgorithm.HS512)
+    private val key = Keys.hmacShaKeyFor(jwtProperties.secretKey.toByteArray())
 
     /**
      * Access Token

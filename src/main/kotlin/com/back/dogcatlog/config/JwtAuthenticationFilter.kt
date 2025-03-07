@@ -10,9 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.filter.OncePerRequestFilter
 
-
 class JwtAuthenticationFilter(
-    private val jwtTokenProvider: JwtTokenProvider, private val userDetailsService: UserDetailsService
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val userDetailsService: UserDetailsService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -20,24 +20,22 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        try {
-            val token = extractToken(request)
-            if (token != null && jwtTokenProvider.validateToken(token)) {
+        val token = extractToken(request)
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            try {
                 val userId = jwtTokenProvider.getUserId(token)
                 val userDetails = userDetailsService.loadUserByUsername(userId.toString()) as CustomUserDetails
-
                 val authentication = UsernamePasswordAuthenticationToken(
                     userDetails,
                     null,
                     userDetails.authorities
                 )
-
                 SecurityContextHolder.getContext().authentication = authentication
+            } catch (e: Exception) {
+                println("Authentication failed: ${e.message}")  // 디버깅용
             }
-        } catch (e: Exception) {
-            throw CustomException(ErrorCode.INVALID_TOKEN)
         }
-        filterChain.doFilter(request, response)
+        filterChain.doFilter(request, response)  // 항상 다음 필터로 진행
     }
 
     private fun extractToken(request: HttpServletRequest): String? {
