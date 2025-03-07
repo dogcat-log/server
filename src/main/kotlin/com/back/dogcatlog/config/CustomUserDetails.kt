@@ -35,4 +35,6 @@ class CustomUserDetails(
     fun getEmail(): String = user.userEmail
 
     fun getUser(): User = user
+
+
 }

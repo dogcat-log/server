@@ -5,6 +5,7 @@ import com.back.dogcatlog.user.dto.TokenResponse
 import com.back.dogcatlog.user.service.AuthService
 import org.apache.juli.logging.Log
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -38,6 +39,8 @@ class AuthController(
         val tokens = authService.refreshToken(refreshToken)
         return ResponseEntity.ok(tokens)
     }
+
+
 
 
 }

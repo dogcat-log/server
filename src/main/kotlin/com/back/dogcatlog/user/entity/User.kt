@@ -1,7 +1,7 @@
 package com.back.dogcatlog.user.entity
 
 import com.back.dogcatlog.user.dto.AuthProvider
-import com.back.dogcatlog.threms.TermsVersion
+import com.back.dogcatlog.threms.entity.UserTerms
 import com.back.dogcatlog.user.dto.UserRole
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
@@ -10,7 +10,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "users")
-class User(
+data class User(
     @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,10 @@ class User(
     val userEmail: String,
 
     @Column(nullable = false)
-    var userPassword: String,
+    val userPassword: String,
+
+    @OneToMany(mappedBy = "user")
+    val agreedTerms: List<UserTerms> = emptyList(),
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
@@ -30,13 +33,12 @@ class User(
     @Column(nullable = false)
     val userRole: UserRole = UserRole.USER,
 
-    @Column(length = 10)
-    var latestTermVersion: TermsVersion? = null,
 
     @CreationTimestamp
-    val createAt: Instant? = null,
+    val createdAt: Instant? = null,
 
     @UpdateTimestamp
-    var updatedAt: Instant? = null,
+    val updatedAt: Instant? = null,
 
     )
+

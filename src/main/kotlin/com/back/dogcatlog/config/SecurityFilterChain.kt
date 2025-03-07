@@ -31,10 +31,9 @@ class SecurityConfig(
                     .requestMatchers(
                         "/api/auth/**",
                         "/test/hello"
-                    )
-                    .permitAll()
-                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
+                    ).permitAll() // 인증 없이 접근 가능
+                    .requestMatchers("/admin/**").hasRole("ADMIN") // admin 만
+                    .anyRequest().authenticated() // 그 외는 인증 필요
             }
             .addFilterBefore(
                 jwtFilter,

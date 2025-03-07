@@ -20,5 +20,11 @@ enum class ErrorCode(
 
     // Resource
     RESOURCE_NOT_FOUND("R001", "리소스를 찾을 수 없습니다"),
-    ACCESS_DENIED("R002", "접근이 거부되었습니다")
+    ACCESS_DENIED("R002", "접근이 거부되었습니다"),
+
+    // Terms
+    TERMS_NOT_FOUND("T001", "찾을 수 없는 약관입니다."),
+    TERMS_ALREADY_EXISTS("T002", "이미 있는 문구입니다."),
+    TERMS_VERSION_ALREADY_EXISTS("T003", "중복된 버전입니다.")
+
 }
