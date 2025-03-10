@@ -7,6 +7,7 @@ import org.apache.juli.logging.Log
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -34,13 +35,10 @@ class AuthController(
 
     @PostMapping("/refresh")
     fun refreshToken(
-        @RequestParam refreshToken: String
-    ): ResponseEntity<TokenResponse> {
-        val tokens = authService.refreshToken(refreshToken)
-        return ResponseEntity.ok(tokens)
+        @RequestHeader("Authorization") refreshToken: String
+    ): ResponseEntity<SuccessResponse<TokenResponse>> {
+        val token = refreshToken.removePrefix("Bearer ").trim()
+        val tokens = authService.refreshToken(token)
+        return ResponseEntity.ok(SuccessResponse.of(tokens))
     }
-
-
-
-
 }
