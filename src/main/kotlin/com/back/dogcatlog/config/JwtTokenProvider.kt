@@ -53,7 +53,7 @@ class JwtTokenProvider(private val jwtProperties: JwtProperties) {
                 .parseClaimsJws(refreshToken)
                 .body
 
-            claims["userId"] as Long
+            (claims["userId"] as Number).toLong()
         } catch (e: Exception) {
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
@@ -81,6 +81,7 @@ class JwtTokenProvider(private val jwtProperties: JwtProperties) {
                 .parseClaimsJws(token)
             true
         } catch (e: Exception) {
+            println("Token validation failed: ${e.message}")  // 디버깅
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
     }
