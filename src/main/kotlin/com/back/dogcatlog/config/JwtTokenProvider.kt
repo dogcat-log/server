@@ -63,11 +63,11 @@ class JwtTokenProvider(private val jwtProperties: JwtProperties) {
      * 토큰에서 userId 추출하기
      */
     fun getUserId(token: String): Long {
-        return Jwts.parserBuilder()
+        return (Jwts.parserBuilder()
             .setSigningKey(key)
             .build()
             .parseClaimsJws(token)
-            .body["userId"] as Long
+            .body["userId"] as Number).toLong()
     }
 
     /**
