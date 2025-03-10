@@ -81,7 +81,7 @@ class JwtTokenProvider(private val jwtProperties: JwtProperties) {
                 .parseClaimsJws(token)
             true
         } catch (e: Exception) {
-            println("Token validation failed: ${e.message}")  // 디버깅
+            println("Token validation failed: ${e.message}")
             throw CustomException(ErrorCode.INVALID_TOKEN)
         }
     }

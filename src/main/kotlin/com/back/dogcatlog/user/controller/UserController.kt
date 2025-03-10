@@ -2,6 +2,7 @@ package com.back.dogcatlog.user.controller
 
 import com.back.dogcatlog.config.CustomUserDetails
 import com.back.dogcatlog.global.error.SuccessResponse
+import com.back.dogcatlog.user.dto.UserProfileResponse
 import com.back.dogcatlog.user.repository.UserRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -18,9 +19,11 @@ class UserController(
     @GetMapping("/profile")
     fun getUser(
         @AuthenticationPrincipal userDetails: CustomUserDetails,
-    ): ResponseEntity<SuccessResponse<String>> {
+    ): ResponseEntity<SuccessResponse<UserProfileResponse>> {
         val userUid = userRepository.findById(userDetails.getId())
-        return ResponseEntity.ok(SuccessResponse.of(userUid.get().userEmail))
+        return ResponseEntity.ok(SuccessResponse.of(UserProfileResponse(
+            userEmail = userUid.get().userEmail
+        )))
 
     }
 }
