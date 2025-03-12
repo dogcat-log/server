@@ -24,7 +24,7 @@ enum class ErrorCode(
 
     // Terms
     TERMS_NOT_FOUND("T001", "찾을 수 없는 약관입니다."),
-    TERMS_ALREADY_EXISTS("T002", "이미 있는 문구입니다."),
+    TERMS_ALREADY_EXISTS("T002", "이미 존재하는 약관타입입니다."),
     TERMS_VERSION_ALREADY_EXISTS("T003", "중복된 버전입니다.")
 
 }

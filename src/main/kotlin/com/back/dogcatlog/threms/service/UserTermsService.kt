@@ -4,6 +4,8 @@ import com.back.dogcatlog.config.CustomUserDetails
 import com.back.dogcatlog.global.error.CustomException
 import com.back.dogcatlog.global.error.ErrorCode
 import com.back.dogcatlog.threms.dto.TermsAgreeRequest
+import com.back.dogcatlog.threms.dto.TermsDetailResponse
+import com.back.dogcatlog.threms.dto.TermsStatusResponse
 import com.back.dogcatlog.threms.entity.UserTerms
 import com.back.dogcatlog.threms.repository.TermsRepository
 import com.back.dogcatlog.threms.repository.TermsTypeRepository
@@ -31,8 +33,10 @@ class UserTermsService(
             .orElseThrow { CustomException(ErrorCode.USER_NOT_FOUND) }
 
         request.agreements.forEach { agreement ->
+            // 버전 있는지 확인
             val termsType = termsTypeRepository.findByName(agreement.termsTypeName)
                 ?: throw CustomException(ErrorCode.TERMS_NOT_FOUND)
+            // 타입의 최신 버전 확인
             val latestTerms = termsRepository.findLatestByTermsType(termsType)
                 ?: throw CustomException(ErrorCode.TERMS_NOT_FOUND)
 
@@ -51,15 +55,24 @@ class UserTermsService(
     }
 
     /**
-     * 필수 약관 동의 여부 확인 (USER 전용)
-     */
-    fun checkRequiredTermsAgreement(userId: Long): Boolean {
-        val user = userRepository.findById(userId)
-            .orElseThrow { CustomException(ErrorCode.USER_NOT_FOUND) }
-        val requiredTerms = termsRepository.findRequiredTerms()
-
-        return requiredTerms.all { required ->
-            user.agreedTerms.any { it.terms == required && it.isAgreed }
-        }
+     * 사용자 동의 여부 조회(최신)
+     * */
+    fun checkRequiredTermsAgreements(userDetails: CustomUserDetails): TermsStatusResponse {
+        return termsRepository.findAllTerms(userDetails.getId())
     }
+
+    /**
+     * 필수 약관 동의 여부 확인 (USER 전용)
+     * 삭제 예정 위의 함수 사용
+     */
+//    fun checkRequiredTermsAgreement(userId: Long): Boolean {
+//        val user = userRepository.findById(userId)
+//            .orElseThrow { CustomException(ErrorCode.USER_NOT_FOUND) }
+//
+//        val requiredTerms = termsRepository.findRequiredTerms()
+//
+//        return requiredTerms.all { required ->
+//            user.agreedTerms.any { it.terms == required && it.isAgreed }
+//        }
+//    }
 }

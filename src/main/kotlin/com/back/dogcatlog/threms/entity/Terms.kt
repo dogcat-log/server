@@ -17,11 +17,14 @@ data class Terms(
     val termsType: TermsTypeEntity,
 
     @Column(nullable = false)
-    val version: String,
+    val version: Long,
 
     @Column(nullable = false)
     var isRequired: Boolean,
 
+
+    @Column(nullable = false, length = 255)
+    val descriptionUrl: String,
 
     @CreationTimestamp
     val createdAt: Instant? = null,

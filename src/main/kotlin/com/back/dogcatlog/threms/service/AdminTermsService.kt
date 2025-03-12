@@ -4,6 +4,7 @@ import com.back.dogcatlog.global.error.CustomException
 import com.back.dogcatlog.global.error.ErrorCode
 import com.back.dogcatlog.threms.dto.AddNewTermsVersion
 import com.back.dogcatlog.threms.dto.AdminAddNewTermsType
+import com.back.dogcatlog.threms.dto.AdminTermsList
 import com.back.dogcatlog.threms.entity.Terms
 import com.back.dogcatlog.threms.entity.TermsTypeEntity
 import com.back.dogcatlog.threms.repository.TermsRepository
@@ -39,14 +40,11 @@ class AdminTermsService(
         }
 
         // 초기 Terms 생성
-        val newTerms = Terms(
-            termsType = newType,
-            version = requestBody.version,
-            isRequired = requestBody.isRequired,
-            createdAt = Instant.now()  // 명시적 초기화 (엔티티의 @CreationTimestamp와 중복 가능)
-        )
+        val newTerms = requestBody.toEntity(newType)
         return termsRepository.save(newTerms)
     }
+
+
 
     /**
      * 기존 약관에 새 버전 추가 (ADMIN 전용)
@@ -69,12 +67,8 @@ class AdminTermsService(
             }
         }
 
-        val newTerms = Terms(
-            termsType = termsType,
-            version = requestBody.version,
-            isRequired = requestBody.isRequired,
-            createdAt = Instant.now()  // 명시적 초기화
-        )
+        val newTerms = requestBody.toEntity(termsType)
         termsRepository.save(newTerms)
     }
+
 }
