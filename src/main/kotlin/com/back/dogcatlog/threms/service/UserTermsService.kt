@@ -58,21 +58,7 @@ class UserTermsService(
      * 사용자 동의 여부 조회(최신)
      * */
     fun checkRequiredTermsAgreements(userDetails: CustomUserDetails): TermsStatusResponse {
-        return termsRepository.findAllTerms(userDetails.getId())
+        return termsRepository.fetchTermsStatus(userDetails.getId())
     }
 
-    /**
-     * 필수 약관 동의 여부 확인 (USER 전용)
-     * 삭제 예정 위의 함수 사용
-     */
-//    fun checkRequiredTermsAgreement(userId: Long): Boolean {
-//        val user = userRepository.findById(userId)
-//            .orElseThrow { CustomException(ErrorCode.USER_NOT_FOUND) }
-//
-//        val requiredTerms = termsRepository.findRequiredTerms()
-//
-//        return requiredTerms.all { required ->
-//            user.agreedTerms.any { it.terms == required && it.isAgreed }
-//        }
-//    }
 }

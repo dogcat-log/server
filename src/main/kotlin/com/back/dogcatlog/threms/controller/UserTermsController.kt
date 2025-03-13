@@ -37,24 +37,11 @@ class UserTermsController(
     /**
      * 필수 약관 동의 여부 확인 (USER 전용)
      */
-//    @GetMapping("/check-required")
-//    fun checkRequiredTermsAgreement(
-//        @AuthenticationPrincipal userDetails: CustomUserDetails,
-//    ): ResponseEntity<SuccessResponse<Boolean>> {
-//        val isAgreed = userTermsService.checkRequiredTermsAgreement(
-//            userId = userDetails.getId()
-//        )
-//        return ResponseEntity.ok(SuccessResponse.of(isAgreed))
-//    }
-
-    /**
-     * 필수 약관 동의 여부 확인 (USER 전용)
-     */
     @GetMapping("/check-required")
     fun checkRequiredTermsAgreement(
-       @AuthenticationPrincipal userDetails: CustomUserDetails,
+        @AuthenticationPrincipal userDetails: CustomUserDetails,
     ): ResponseEntity<SuccessResponse<TermsStatusResponse>> {
-       val termsStatue= userTermsService.checkRequiredTermsAgreements(userDetails)
+        val termsStatue = userTermsService.checkRequiredTermsAgreements(userDetails)
         return ResponseEntity.ok(SuccessResponse.of(termsStatue))
     }
 }

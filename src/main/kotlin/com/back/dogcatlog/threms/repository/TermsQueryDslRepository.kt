@@ -18,5 +18,5 @@ interface TermsQueryDslRepository {
     fun findByTermsTypeAndVersion(termType: TermsTypeEntity, version: Long): Terms?
 
     // 전체 약관동의 목록 조회
-    fun findAllTerms(userId: Long): TermsStatusResponse
+    fun fetchTermsStatus(userId: Long): TermsStatusResponse
 }

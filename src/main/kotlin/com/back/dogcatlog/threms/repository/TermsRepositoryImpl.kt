@@ -46,7 +46,8 @@ class TermsRepositoryImpl(
             .fetchOne()
     }
 
-    override fun findAllTerms(userId: Long): TermsStatusResponse {
+    //
+    override fun fetchTermsStatus(userId: Long): TermsStatusResponse {
         // 각 타입별 최신 버전을 먼저 찾기
         val latestVersions = jpaQueryFactory
             .select(

@@ -26,7 +26,6 @@ class AdminTermsController(
     }
 
 
-
     /**
      * 기존 약관에 새 버전 추가 (ADMIN 전용)
      * */
